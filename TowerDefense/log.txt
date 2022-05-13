@@ -1,0 +1,22 @@
+[INFO] Game Initializing...
+[INFO] Loaded Resource<image>: resources/images/icon.png
+[INFO] Loaded window icon from: icon.png
+[INFO] There are total 16 supported mouse buttons
+[INFO] Allegro5 initialized
+[INFO] Game begin
+[INFO] Loaded Resource<image>: resources/images/start_scene/out.png scaled to 400x100
+[INFO] Loaded Resource<image>: resources/images/start_scene/out.png
+[INFO] Loaded Resource<image>: resources/images/start_scene/in.png
+[INFO] Loaded Resource<font>: resources/fonts/pirulen.ttf with size 48
+[INFO] Loaded Resource<font>: resources/fonts/pirulen.ttf with size 108
+[INFO] Game initialized
+[INFO] Game start event loop
+[INFO] Game Terminating...
+[INFO] Game terminated
+[INFO] Game end
+[INFO] Destroyed Resource<image>: icon.png
+[INFO] Destroyed Resource<image>: start_scene/out.png?400x100
+[INFO] Destroyed Resource<image>: start_scene/out.png
+[INFO] Destroyed Resource<image>: start_scene/in.png
+[INFO] Destroyed Resource<font>: pirulen.ttf?48
+[INFO] Destroyed Resource<font>: pirulen.ttf?108
