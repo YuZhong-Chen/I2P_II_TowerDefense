@@ -22,7 +22,7 @@ void ArmySelectScene::Initialize() {
     AddNewObject(new Engine::Image("play/sand.png", 1250, 0, 336, 896));
     
     // TODO 1 (1/8): Initialize the usedSpace and totalSpace. (finish
-    usedSpace = 4;
+    usedSpace = 0;
     totalSpace = 5;
     
     // TODO 1 (2/8): Add the usedSpace and totalSpace to the label. (finish
@@ -35,7 +35,7 @@ void ArmySelectScene::Initialize() {
         }
     }
     fromSetting = false;
-    armyAmount[0] = 4;
+    armyAmount[0] = 0;
     
     // set ArmyImage
     ArmyImage[0] = "play/warrior.png";
