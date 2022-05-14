@@ -61,6 +61,9 @@ void PlayScene::Initialize() {
 	deathCountDown = -1;
 	SpeedMult = 1;
     MapId = 1;
+    for (int i = 0; i < WALL_SIZE; i++) {
+        brokenWall[i].clear();
+    }
 
 	// Add groups from bottom to top.
 	AddNewObject(TileMapGroup = new Group());
@@ -122,16 +125,6 @@ void PlayScene::Update(float deltaTime) {
     }
     if (!ArmyGroup->GetObjects().empty()) armyEmpty = false;
     if (armyEmpty) {
-        // Release the resources
-        delete TileMapGroup;
-        delete GroundEffectGroup;
-        delete DebugIndicatorGroup;
-        delete BulletGroup;
-        delete DefenseGroup;
-        delete WallGroup;
-        delete ArmyGroup;
-        delete EffectGroup;
-        delete UIGroup;
         Engine::GameEngine::GetInstance().ChangeScene("lose");
     }
     
