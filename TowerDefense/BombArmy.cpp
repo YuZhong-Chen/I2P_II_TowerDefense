@@ -50,7 +50,6 @@ void BombArmy::Update(float deltaTime) {
             Target = tgt;
             Target->lockedArmies.push_back(this);
             lockedArmyIterator = std::prev(Target->lockedArmies.end());
-            movingToWall = true;
         }
         else {
             for (auto& it : scene->DefenseGroup->GetObjects()) {
@@ -64,7 +63,6 @@ void BombArmy::Update(float deltaTime) {
                 Target = tgt;
                 Target->lockedArmies.push_back(this);
                 lockedArmyIterator = std::prev(Target->lockedArmies.end());
-                movingToWall = false;
             }
         }
 
