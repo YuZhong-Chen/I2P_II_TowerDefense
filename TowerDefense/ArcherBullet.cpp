@@ -8,6 +8,7 @@
 #include "PlayScene.hpp"
 #include "Point.hpp"
 #include "Defense.hpp"
+#include "ShootEffect.hpp"
 
 class Defense;
 
@@ -18,5 +19,5 @@ ArcherBullet::ArcherBullet(Engine::Point position, Engine::Point forwardDirectio
 
 void ArcherBullet::OnExplode(Defense *defense) {
     // TODO 3 (1/2): Add a ShootEffect here. Remember you need to include the class.
- 
+    getPlayScene()->EffectGroup->AddNewObject(new ShootEffect(Position.x, Position.y));
 }

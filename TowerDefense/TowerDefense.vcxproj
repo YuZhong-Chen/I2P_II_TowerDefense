@@ -153,6 +153,7 @@
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Role.cpp" />
     <ClCompile Include="Setting_Scene.cpp" />
+    <ClCompile Include="ShootEffect.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StageSelectScene.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Resources.hpp" />
     <ClInclude Include="Role.hpp" />
     <ClInclude Include="Setting_Scene.hpp" />
+    <ClInclude Include="ShootEffect.hpp" />
     <ClInclude Include="Slider.hpp" />
     <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="StageSelectScene.hpp" />
