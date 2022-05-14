@@ -13,6 +13,7 @@
 #include "PlayScene.hpp"
 #include "Point.hpp"
 #include "Sprite.hpp"
+#include "ShootEffect.hpp"
 
 class Defense;
 
@@ -26,8 +27,7 @@ ArmyBullet::ArmyBullet(std::string img, float speed, float damage, Engine::Point
 }
 
 void ArmyBullet::OnExplode(Defense* defense) {
-    // Delete
-//    getPlayScene()->EffectGroup->AddNewObject(new ShootEffect(defense->Position.x , defense->Position.y));
+    getPlayScene()->EffectGroup->AddNewObject(new ShootEffect(defense->Position.x, defense->Position.y));
 }
 
 void ArmyBullet::Update(float deltaTime) {

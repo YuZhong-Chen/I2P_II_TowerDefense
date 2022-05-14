@@ -80,7 +80,8 @@ void BombArmy::Update(float deltaTime) {
         // TODO 2 (8/8): If bomb army is on the same block with target. Explode itself to deal damage to the target. Otherwise, move toward the target.
         if (ManHattanDistance(Target->Position) == 0) {
             // Notice that bomb army deals different damage to wall and normal target.
-            Hit(INFINITY);
+            Target->Hit(INFINITY);
+            this->Hit(INFINITY);
         }
         else {
             int dx = Target->Position.x - Position.x;
