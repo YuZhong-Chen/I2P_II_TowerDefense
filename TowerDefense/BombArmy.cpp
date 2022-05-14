@@ -12,6 +12,7 @@
 #include "Point.hpp"
 #include "BombArmy.hpp"
 #include "Defense.hpp"
+#include "LOG.hpp"
 
 
 //Army(std::string img, float x, float y, float radius, float coolDown, float speed, float hp, int id, float shootRadius);
@@ -50,6 +51,7 @@ void BombArmy::Update(float deltaTime) {
             Target = tgt;
             Target->lockedArmies.push_back(this);
             lockedArmyIterator = std::prev(Target->lockedArmies.end());
+            movingToWall = true;
         }
         else {
             for (auto& it : scene->DefenseGroup->GetObjects()) {
@@ -63,12 +65,12 @@ void BombArmy::Update(float deltaTime) {
                 Target = tgt;
                 Target->lockedArmies.push_back(this);
                 lockedArmyIterator = std::prev(Target->lockedArmies.end());
+                movingToWall = false;
             }
         }
 
         // TODO 2 (7/8): Store the closet target in Target, and update lockedArmyIterator. You can imitate the same part in Defense::Update().
         // Also, record the target is wall or a noraml defense.
-
     }
     if (Target) {
         Rotation = UpdateRotation(deltaTime, Target->Position);
@@ -76,7 +78,7 @@ void BombArmy::Update(float deltaTime) {
         reload = coolDown;
         
         // TODO 2 (8/8): If bomb army is on the same block with target. Explode itself to deal damage to the target. Otherwise, move toward the target.
-        if (movingToWall) {
+        if (ManHattanDistance(Target->Position) == 0) {
             // Notice that bomb army deals different damage to wall and normal target.
             Hit(INFINITY);
         }
@@ -103,6 +105,6 @@ void BombArmy::Hit(float damage) {
         // Remove all Defense's reference to target.
         for (auto& it : lockedDefenses)
             it->Target = nullptr;
-        getPlayScene()->DefenseGroup->RemoveObject(objectIterator);
+        getPlayScene()->ArmyGroup->RemoveObject(objectIterator);
     }
 }
