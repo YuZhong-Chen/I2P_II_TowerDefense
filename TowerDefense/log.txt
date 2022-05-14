@@ -18,8 +18,21 @@
 [INFO] Loaded Resource<image>: resources/images/stage-select/dirt.png
 [INFO] Loaded Resource<image>: resources/images/stage-select/floor.png
 [INFO] Loaded Resource<font>: resources/fonts/pirulen.ttf with size 45
+[INFO] Loaded Resource<image>: resources/images/play/bombs.png scaled to 175x175
 [INFO] Loaded Resource<image>: resources/images/stage-select/dirt.png scaled to 190x80
 [INFO] Loaded Resource<audio>: resources/audios/select.ogg
+[INFO] Created<sample_instance>: resources/audios/select.ogg
+[INFO] Changed to army-select scene
+[INFO] stopped audio (sample)
+[INFO] Loaded Resource<image>: resources/images/stage-select/dirt.png scaled to 200x100
+[INFO] Loaded Resource<font>: resources/fonts/pirulen.ttf with size 28
+[INFO] Loaded Resource<image>: resources/images/stage-select/slider.png
+[INFO] Loaded Resource<image>: resources/images/stage-select/slider-blue.png
+[INFO] Loaded Resource<image>: resources/images/stage-select/bar.png scaled to 190x4
+[INFO] Loaded Resource<image>: resources/images/stage-select/end.png
+[INFO] Created<sample_instance>: resources/audios/select.ogg
+[INFO] Changed to setting scene
+[INFO] stopped audio (sample)
 [INFO] Created<sample_instance>: resources/audios/select.ogg
 [INFO] Changed to army-select scene
 [INFO] Game Terminating...
@@ -28,17 +41,24 @@
 [INFO] Game end
 [INFO] Destroyed Resource<image>: stage-select/dirt.png
 [INFO] Destroyed Resource<image>: icon.png
+[INFO] Destroyed Resource<image>: stage-select/bar.png?190x4
 [INFO] Destroyed Resource<image>: start_scene/out.png?400x100
 [INFO] Destroyed Resource<image>: start_scene/out.png
 [INFO] Destroyed Resource<image>: play/sand.png?336x896
 [INFO] Destroyed Resource<image>: start_scene/in.png
 [INFO] Destroyed Resource<image>: play/warrior.png?175x175
+[INFO] Destroyed Resource<image>: stage-select/end.png
 [INFO] Destroyed Resource<image>: stage-select/dirt.png?75x50
 [INFO] Destroyed Resource<image>: stage-select/floor.png
+[INFO] Destroyed Resource<image>: play/bombs.png?175x175
 [INFO] Destroyed Resource<image>: stage-select/dirt.png?190x80
+[INFO] Destroyed Resource<image>: stage-select/dirt.png?200x100
+[INFO] Destroyed Resource<image>: stage-select/slider.png
+[INFO] Destroyed Resource<image>: stage-select/slider-blue.png
 [INFO] Destroyed Resource<font>: pirulen.ttf?48
 [INFO] Destroyed Resource<font>: pirulen.ttf?108
 [INFO] Destroyed Resource<font>: pirulen.ttf?45
 [INFO] Destroyed Resource<font>: pirulen.ttf?30
+[INFO] Destroyed Resource<font>: pirulen.ttf?28
 [INFO] Destroyed<sample_instance>: select.ogg
 [INFO] Destroyed Resource<audio>: select.ogg

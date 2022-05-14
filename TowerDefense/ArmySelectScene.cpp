@@ -16,7 +16,7 @@
 void ArmySelectScene::Initialize() {
     // parameter initialization
     // TODO 2 (1/8): modify the totalArmy amount.
-    totalArmy = 1;
+    totalArmy = 2;
     
     // Space status background
     AddNewObject(new Engine::Image("play/sand.png", 1250, 0, 336, 896));
@@ -40,6 +40,7 @@ void ArmySelectScene::Initialize() {
     // set ArmyImage
     ArmyImage[0] = "play/warrior.png";
     // TODO 2 (2/8): Create the bomb image. You can find image in the play/ folder.
+    ArmyImage[1] = "play/bombs.png";
     
     // Add new enemy
     for (int i=0; i<totalArmy; i++) {
@@ -95,17 +96,37 @@ void ArmySelectScene::PlayOnClick(ButtonType type, int id, int spaceCost) {
     else if (type == BUTTON_RESET) {
         // TODO 1 (8/8): Reset the usedSpace and the amount of every army to 0.
         usedSpace = 0;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < totalArmy; i++) {
             armyAmount[i] = 0;
+            UIArmyAmount[i]->Text = std::to_string(armyAmount[i]);
+            UIArmyAmount[i]->Draw();
         }
+        UISpaceUsage->Text = "Space: " + std::to_string(usedSpace) + "/" + std::to_string(totalSpace);
+        UISpaceUsage->Draw();
     }
     else if (type == BUTTON_ADD) {
         // TODO 1 (5/8): When the add(+) button is clicked, update the usedSpace and the armyAmount of that army. Make sure that the labels shown on the screen also update.
         // Notice that the button won't take effect when the usedSpace is equal to totalSpace.
+        if (usedSpace + spaceCost <= totalSpace) {
+            usedSpace += spaceCost;
+            armyAmount[id] += 1;
+            UIArmyAmount[id]->Text = std::to_string(armyAmount[id]);
+            UISpaceUsage->Text = "Space: " + std::to_string(usedSpace) + "/" + std::to_string(totalSpace);
+            UIArmyAmount[id]->Draw();
+            UISpaceUsage->Draw();
+        }
     }
     else if (type == BUTTON_SUB) {
         // TODO 1 (6/8): When the sub(-) button is clicked, update the usedSpace and the armyAmount of that army. Make sure that the labels shown on the screen also update.
         // Notice that the button won't take effect when the armyAmount is equal to 0.
+        if (armyAmount[id] >= 1) {
+            usedSpace -= spaceCost;
+            armyAmount[id] -= 1;
+            UIArmyAmount[id]->Text = std::to_string(armyAmount[id]);
+            UISpaceUsage->Text = "Space: " + std::to_string(usedSpace) + "/" + std::to_string(totalSpace);
+            UIArmyAmount[id]->Draw();
+            UISpaceUsage->Draw();
+        }
     }
     else if (type == BUTTON_SETTING) {
         Engine::GameEngine::GetInstance().ChangeScene("setting");
@@ -134,7 +155,7 @@ void ArmySelectScene::AddNewArmy(int id, std::string imageName, int spaceCost) {
     // Suggestion of ImageButton's position setting: x(halfW / 4 + offsetW), y(oneThirdH + 25 + offsetH), w(75), h(50).
     // Suggestion of Label position settings: x(halfW / 4 + 35 + offsetW), y(oneThirdH + 50 + offsetH). (finish
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW / 4 + offsetW, oneThirdH + 25 + offsetH, 75, 50);
-    btn->SetOnClickCallback(std::bind(&ArmySelectScene::PlayOnClick, this, BUTTON_ADD, -1, 0));
+    btn->SetOnClickCallback(std::bind(&ArmySelectScene::PlayOnClick, this, BUTTON_ADD, id, 1));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("+", "pirulen.ttf", 45, halfW / 4 + 35 + offsetW, oneThirdH + 50 + offsetH, 0, 0, 0, 255, 0.5, 0.5));
 
@@ -142,7 +163,7 @@ void ArmySelectScene::AddNewArmy(int id, std::string imageName, int spaceCost) {
     // Suggestion of ImageButton's position settings: x(halfW / 4 + offsetW + 100), y(oneThirdH + 25 + offsetH), w(75), h(50).
     // Suggestion of Label position settings: x(halfW / 4 + 135 + offsetW), y(oneThirdH + 50 + offsetH). (finish
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW / 4 + offsetW + 100, oneThirdH + 25 + offsetH, 75, 50);
-    btn->SetOnClickCallback(std::bind(&ArmySelectScene::PlayOnClick, this, BUTTON_SUB, -1, 0));
+    btn->SetOnClickCallback(std::bind(&ArmySelectScene::PlayOnClick, this, BUTTON_SUB, id, 1));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("-", "pirulen.ttf", 45, halfW / 4 + 135 + offsetW, oneThirdH + 50 + offsetH, 0, 0, 0, 255, 0.5, 0.5));
 }

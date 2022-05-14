@@ -50,7 +50,7 @@ const int PlayScene::MapWidth = 24, PlayScene::MapHeight = 12;//50;//13;
 const int PlayScene::BlockSize = 64;
 const float PlayScene::DangerTime = 7.61;
 // TODO 4 (2/3): Set the code sequence correctly.
-const std::vector<int> PlayScene::code = { ALLEGRO_KEY_UP };
+const std::vector<int> PlayScene::code = { ALLEGRO_KEY_UP, ALLEGRO_KEY_UP };
 Engine::Point PlayScene::GetClientSize() {
 	return Engine::Point(MapWidth * BlockSize, MapHeight * BlockSize);
 }
@@ -203,6 +203,8 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
             if (remainId != -1) {
                 if (remainId == 0)
                     preview = new ArcherArmy(0, 0);
+                else if (remainId == 1)
+                    preview = new BombArmy(0, 0);
 
                 preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
                 preview->Tint = al_map_rgba(255, 255, 255, 200);
@@ -337,7 +339,7 @@ void PlayScene::ConstructUI() {
 
     // TODO 2 (3/8) : Construct the select button for bomb army.
     ConstructButton(0, ArmyImage[0]);
-
+    ConstructButton(1, ArmyImage[1]);
 }
 void PlayScene::ConstructButton(int id, std::string imageName) {
     ArmyButton* btn;
@@ -359,8 +361,10 @@ void PlayScene::UIBtnClicked(int id) {
         preview = nullptr;
     }
     
-	if (id == 0)
+    if (id == 0)
         preview = new ArcherArmy(0, 0);
+    else if (id == 1)
+        preview = new BombArmy(0, 0);
 
 	if (!preview)
 		return;

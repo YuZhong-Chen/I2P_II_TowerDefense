@@ -36,9 +36,38 @@ void BombArmy::Update(float deltaTime) {
         // However simply loop through all enemies is enough for this program.
         
         // TODO 2 (6/8): Lock the closet wall. If there's no wall on the map, it will lock the closet defense.
-        // For the simplicity, we use manHattan distance to measure the distance bewteen objects. You can use the ManHattanDistance() function in Army class directly for calculation.
+        // For the simplicity, we use manHattan distance to measure the distance bewteen objects. You can use the ManHattanDistance() function in Army class directly for calculation.        
+        int maxDis = INT_MAX;
+        Defense* tgt = nullptr;
+        for (auto& it : scene->WallGroup->GetObjects()) {
+            int dis = ManHattanDistance(it->Position);
+            if (dis < maxDis) {
+                maxDis = dis;
+                tgt = dynamic_cast<Defense*>(it);
+            }
+        }
+        if (tgt) {
+            Target = tgt;
+            Target->lockedArmies.push_back(this);
+            lockedArmyIterator = std::prev(Target->lockedArmies.end());
+            movingToWall = true;
+        }
+        else {
+            for (auto& it : scene->DefenseGroup->GetObjects()) {
+                int dis = ManHattanDistance(it->Position);
+                if (dis < maxDis) {
+                    maxDis = dis;
+                    tgt = dynamic_cast<Defense*>(it);
+                }
+            }
+            if (tgt) {
+                Target = tgt;
+                Target->lockedArmies.push_back(this);
+                lockedArmyIterator = std::prev(Target->lockedArmies.end());
+                movingToWall = false;
+            }
+        }
 
-        
         // TODO 2 (7/8): Store the closet target in Target, and update lockedArmyIterator. You can imitate the same part in Defense::Update().
         // Also, record the target is wall or a noraml defense.
 
@@ -49,7 +78,7 @@ void BombArmy::Update(float deltaTime) {
         reload = coolDown;
         
         // TODO 2 (8/8): If bomb army is on the same block with target. Explode itself to deal damage to the target. Otherwise, move toward the target.
-        if (false /* need to modify */) {
+        if (movingToWall) {
             // Notice that bomb army deals different damage to wall and normal target.
             Hit(INFINITY);
         }
@@ -71,5 +100,11 @@ void BombArmy::CreateBullet(Engine::Point pt) {}
 
 // TODO 2 (5/8): You can imitate the hit function in Army class. Notice that the bomb army won't have explosion effect.
 void BombArmy::Hit(float damage) {
-
+    HP -= damage;
+    if (HP <= 0) {
+        // Remove all Defense's reference to target.
+        for (auto& it : lockedDefenses)
+            it->Target = nullptr;
+        getPlayScene()->DefenseGroup->RemoveObject(objectIterator);
+    }
 }
