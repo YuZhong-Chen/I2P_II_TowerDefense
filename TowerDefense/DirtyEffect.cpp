@@ -12,9 +12,9 @@ PlayScene* DirtyEffect::getPlayScene() {
 	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 DirtyEffect::DirtyEffect(std::string img, float timeSpan, float x, float y) : Sprite(img, x, y), timeSpan(timeSpan), alpha(1) {
-	std::random_device dev;
-	std::mt19937 rng(dev());
-	std::uniform_real_distribution<> dist(-ALLEGRO_PI, ALLEGRO_PI);
+	std::random_device dev;     // Generate the Random Seed.
+	std::mt19937 rng(dev());    // Genarate the Random Number. (Base on the seed generated.)
+	std::uniform_real_distribution<> dist(-ALLEGRO_PI, ALLEGRO_PI); // Get the distribution.
 	Rotation = dist(rng);
 }
 void DirtyEffect::Update(float deltaTime) {

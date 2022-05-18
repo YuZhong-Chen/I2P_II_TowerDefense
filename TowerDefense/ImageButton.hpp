@@ -10,7 +10,7 @@
 
 namespace Engine {
 	/// <summary>
-	/// A clickable button, changes image when mouse move.
+	/// A clickable button, changes image when mouse move.
 	/// </summary>
 	class ImageButton: public Image, public IControl {
 	protected:

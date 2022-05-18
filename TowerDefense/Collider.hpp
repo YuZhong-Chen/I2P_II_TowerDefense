@@ -28,6 +28,7 @@ namespace Engine {
 		static bool IsPointInRect(Point pnt, Point rectPos, Point rectSize);
 		/// <summary>
 		/// Check if two rectangle overlaps.
+		/// Second rectangle is smaller than the first rectangle.
 		/// </summary>
 		/// <param name="rect1p1">Top-Left coordinate of the first rectangle.</param>
 		/// <param name="rect1p2">Bottom-Right coordinate of the first rectangle.</param>

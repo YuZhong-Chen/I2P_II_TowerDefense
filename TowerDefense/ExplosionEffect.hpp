@@ -13,7 +13,7 @@ protected:
 	PlayScene* getPlayScene();
 	float timeTicks;
 	std::vector<std::shared_ptr<ALLEGRO_BITMAP>> bmps;
-	float timeSpan = 0.5;
+	float timeSpan = 0.5;   // Time for displaying all images.
 public:
 	ExplosionEffect(float x, float y);
 	void Update(float deltaTime) override;

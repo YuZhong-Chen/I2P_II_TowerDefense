@@ -49,8 +49,10 @@ const std::vector<Engine::Point> PlayScene::directions = { Engine::Point(-1, 0),
 const int PlayScene::MapWidth = 24, PlayScene::MapHeight = 12;//50;//13;
 const int PlayScene::BlockSize = 64;
 const float PlayScene::DangerTime = 7.61;
-// TODO 4 (2/3): Set the code sequence correctly.
+
+// Set the code sequence.
 const std::vector<int> PlayScene::code = { ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_LEFT, ALLEGRO_KEY_RIGHT, ALLEGRO_KEY_ENTER };
+
 Engine::Point PlayScene::GetClientSize() {
 	return Engine::Point(MapWidth * BlockSize, MapHeight * BlockSize);
 }
@@ -83,9 +85,11 @@ void PlayScene::Initialize() {
 	imgTarget->Visible = false;
 	preview = nullptr;
 	UIGroup->AddNewObject(imgTarget);
+
 	// Preload Lose Scene
 	deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
 	Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
+
 	// Start BGM.
     if (!mute)
         bgmInstance = AudioHelper::PlaySample("play.ogg", true, AudioHelper::BGMVolume);

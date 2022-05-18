@@ -3,10 +3,12 @@
 #include "LOG.hpp"
 
 namespace Engine {
+	// Do not modify here, it is not work. 
+	// Modify the SetConfig() at LOG.hpp .
 	bool LOG::Enabled = false;
 	bool LOG::LogVerbose = false;
 	const char* LOG::FilePath = "log.txt";
-
+	
 	LOG::LOG(LogType type) {
 		enabled = Enabled;
 		this->type = type;

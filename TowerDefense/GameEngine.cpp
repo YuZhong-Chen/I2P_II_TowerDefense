@@ -24,9 +24,9 @@ namespace Engine {
 
 		// Initialize add-ons.
 		if (!al_init_primitives_addon()) throw Allegro5Exception("failed to initialize primitives add-on");
-		al_init_font_addon();
+		// al_init_font_addon();
 		// Use the code below if you're using a newer version or Allegro5, the code above is for compatibility.
-		//if (!al_init_font_addon()) throw Allegro5Exception("failed to initialize font add-on");
+		if (!al_init_font_addon()) throw Allegro5Exception("failed to initialize font add-on");
 		if (!al_init_ttf_addon()) throw Allegro5Exception("failed to initialize ttf add-on");
 		if (!al_init_image_addon()) throw Allegro5Exception("failed to initialize image add-on");
 		// Enable antialias by linear interpolation.
