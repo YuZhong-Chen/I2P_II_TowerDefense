@@ -138,6 +138,12 @@
     <ClCompile Include="WobbuffetArmy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SphealDefense.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphealBullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ViewController.h">
@@ -261,6 +267,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WobbuffetArmy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SphealDefense.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SphealBullet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

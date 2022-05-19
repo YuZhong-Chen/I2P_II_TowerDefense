@@ -29,6 +29,7 @@ private:
 		TILE_FLOOR,
         TILE_WALL,
         TILE_CANNON,
+		TILE_SPHEAL,
 		TILE_OCCUPIED,
 	};
 	ALLEGRO_SAMPLE_ID bgmId;

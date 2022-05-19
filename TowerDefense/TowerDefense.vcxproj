@@ -155,6 +155,8 @@
     <ClCompile Include="Setting_Scene.cpp" />
     <ClCompile Include="ShootEffect.cpp" />
     <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="SphealBullet.cpp" />
+    <ClCompile Include="SphealDefense.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StageSelectScene.cpp" />
     <ClCompile Include="Start_Scene.cpp" />
@@ -197,6 +199,8 @@
     <ClInclude Include="Setting_Scene.hpp" />
     <ClInclude Include="ShootEffect.hpp" />
     <ClInclude Include="Slider.hpp" />
+    <ClInclude Include="SphealBullet.hpp" />
+    <ClInclude Include="SphealDefense.hpp" />
     <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="StageSelectScene.hpp" />
     <ClInclude Include="Start_Scene.hpp" />

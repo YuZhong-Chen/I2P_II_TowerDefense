@@ -34,6 +34,7 @@
 
 // Defense
 #include "CannonDefense.hpp"
+#include "SphealDefense.hpp"
 #include "WallDefense.hpp"
 
 #define LEFT 0
@@ -43,7 +44,7 @@
 #define WALL_SIZE 4
 #define MAX_ARMY_AMOUNT 6
 
-// TODO 2 (4/8) : Add the BombArmy when click the imageButton and place it. You can search for the ArcherArmy to know where to add.
+// Searching for the ArcherArmy to know where to add an army.
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = { Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
@@ -57,6 +58,7 @@ const std::vector<int> PlayScene::code = { ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEG
 Engine::Point PlayScene::GetClientSize() {
 	return Engine::Point(MapWidth * BlockSize, MapHeight * BlockSize);
 }
+
 void PlayScene::Initialize() {
 	mapState.clear();
 	keyStrokes.clear();
@@ -295,10 +297,12 @@ void PlayScene::ReadMap() {
         // 0: floor
         // 1: wall
         // 2: canon
+        // 3: spheal
 		switch (c) {
-		case '0': mapData.push_back(TILE_FLOOR); break;
-		case '1': mapData.push_back(TILE_WALL); break;
+		case '0': mapData.push_back(TILE_FLOOR);  break;
+		case '1': mapData.push_back(TILE_WALL);   break;
         case '2': mapData.push_back(TILE_CANNON); break;
+        case '3': mapData.push_back(TILE_SPHEAL); break;
 		case '\n':
 		case '\r':
 			if (static_cast<int>(mapData.size()) / MapWidth != 0)
@@ -329,6 +333,9 @@ void PlayScene::ReadMap() {
                     break;
                 case TILE_CANNON:
                     DefenseGroup->AddNewObject(new CannonDefense(j * BlockSize + BlockSize / 2, i * BlockSize + BlockSize / 2));
+                    break;
+                case TILE_SPHEAL:
+                    DefenseGroup->AddNewObject(new SphealDefense(j * BlockSize + BlockSize / 2, i * BlockSize + BlockSize / 2));
                     break;
                 case TILE_FLOOR:
                     if (j <= MapWidth-2 && j >= 2) {
