@@ -30,6 +30,7 @@
 // Army
 #include "BombArmy.hpp"
 #include "ArcherArmy.hpp"
+#include "WobbuffetArmy.hpp"
 
 // Defense
 #include "CannonDefense.hpp"
@@ -121,12 +122,14 @@ void PlayScene::Update(float deltaTime) {
     
     // Lose
     bool armyEmpty = true;
+    // Check the remaining amount of the army that can be placed.
     for (int i=0; i<totalArmy; i++) {
         if (armyAmount[i] > 0) {
             armyEmpty = false;
             break;
         }
     }
+    // Check the amount of army in the scene.
     if (!ArmyGroup->GetObjects().empty()) armyEmpty = false;
     if (armyEmpty) {
         Engine::GameEngine::GetInstance().ChangeScene("lose");
@@ -202,6 +205,8 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
                     preview = new ArcherArmy(0, 0);
                 else if (remainId == 1)
                     preview = new BombArmy(0, 0);
+                else if (remainId == 2)
+                    preview = new WobbuffetArmy(0, 0);
 
                 preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
                 preview->Tint = al_map_rgba(255, 255, 255, 200);
@@ -223,14 +228,14 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 void PlayScene::OnKeyDown(int keyCode) {
 	IScene::OnKeyDown(keyCode);
 	if (keyCode == ALLEGRO_KEY_TAB) {
-        // TODO 4 (1/3): Set Tab as a code to active / de-active the debug mode.
+        // Set Tab as a code to active / de-active the debug mode.
         DebugMode = !DebugMode;
 	}
 	else {
 		keyStrokes.push_back(keyCode);
 		if (keyStrokes.size() > code.size())
 			keyStrokes.pop_front();
-        // TODO 4 (3/3): Check whether the input sequence corresponds to the code.
+        // Check whether the input sequence corresponds to the code.
         // Active a plane : EffectGroup->AddNewObject(new Plane());
         if (keyStrokes.size() == code.size()) {
             int code_index = 0;
@@ -246,19 +251,19 @@ void PlayScene::OnKeyDown(int keyCode) {
             }
         }
 	}
-	if (keyCode == ALLEGRO_KEY_Q) {
+	if (keyCode == ALLEGRO_KEY_Q && armyAmount[0] > 0) {
 		// Hotkey for ArcherArmy.
 		UIBtnClicked(0);
 	}
-	else if (keyCode == ALLEGRO_KEY_W) {
+	else if (keyCode == ALLEGRO_KEY_W && armyAmount[1] > 0) {
 		// Hotkey for BombArmy.
 		UIBtnClicked(1);
 	}
-	else if (keyCode == ALLEGRO_KEY_E) {
-		// Hotkey for ...
+	else if (keyCode == ALLEGRO_KEY_E && armyAmount[2] > 0) {
+		// Hotkey for WobbuffetArmy
 		UIBtnClicked(2);
 	}
-	else if (keyCode == ALLEGRO_KEY_R) {
+	else if (keyCode == ALLEGRO_KEY_R && armyAmount[3] > 0) {
 		// Hotkey for ...
 		UIBtnClicked(3);
 	}
@@ -348,9 +353,10 @@ void PlayScene::ConstructUI() {
 	// Background
 	UIGroup->AddNewObject(new Engine::Image("play/sand.png", 0, 64*MapHeight, 1536, 128));
 
-    // TODO 2 (3/8) : Construct the select button for bomb army.
+    // Construct the select button for bomb army.
     ConstructButton(0, ArmyImage[0]);
     ConstructButton(1, ArmyImage[1]);
+    ConstructButton(2, ArmyImage[2]);
 }
 void PlayScene::ConstructButton(int id, std::string imageName) {
     ArmyButton* btn;
@@ -376,6 +382,8 @@ void PlayScene::UIBtnClicked(int id) {
         preview = new ArcherArmy(0, 0);
     else if (id == 1)
         preview = new BombArmy(0, 0);
+    else if (id == 2)
+        preview = new WobbuffetArmy(0, 0);
 
 	if (!preview)
 		return;

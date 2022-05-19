@@ -160,6 +160,7 @@
     <ClCompile Include="Start_Scene.cpp" />
     <ClCompile Include="WallDefense.cpp" />
     <ClCompile Include="WinScene.cpp" />
+    <ClCompile Include="WobbuffetArmy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Allegro5Exception.hpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="ViewController.h" />
     <ClInclude Include="WallDefense.hpp" />
     <ClInclude Include="WinScene.hpp" />
+    <ClInclude Include="WobbuffetArmy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

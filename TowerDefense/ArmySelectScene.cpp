@@ -16,14 +16,16 @@
 void ArmySelectScene::Initialize() {
     // parameter initialization
     // modify the totalArmy amount.
-    totalArmy = 2;
+    totalArmy = 3;
     
     // Space status background
     AddNewObject(new Engine::Image("play/sand.png", 1250, 0, 336, 896));
 
     // Initialize the usedSpace and totalSpace.
-    usedSpace = 0;
-    totalSpace = 5;
+    if (!fromSetting) {
+        usedSpace = 0;
+    }
+    totalSpace = 10;
 
     // Add the usedSpace and totalSpace to the label.
     AddNewObject(UISpaceUsage = new Engine::Label("Space: " + std::to_string(usedSpace) + "/" + std::to_string(totalSpace), "pirulen.ttf", 30, 1395, 150, 0, 0, 0, 255, 0.5, 0.5));
@@ -35,13 +37,14 @@ void ArmySelectScene::Initialize() {
         }
     }
     fromSetting = false;
-    armyAmount[0] = 0;
-    armyAmount[1] = 0;
+    // armyAmount[0] = 0;
+    // armyAmount[1] = 0;
+    // armyAmount[2] = 0;
 
     // set ArmyImage
     ArmyImage[0] = "play/warrior.png";
-    // Create the bomb image. You can find image in the play/folder.
     ArmyImage[1] = "play/bombs.png";
+    ArmyImage[2] = "play/Wobbuffet.png";
 
     // Add new enemy
     for (int i=0; i<totalArmy; i++) {
@@ -150,17 +153,13 @@ void ArmySelectScene::AddNewArmy(int id, std::string imageName, int spaceCost) {
     // Army image
     AddNewObject(new Engine::Image(imageName, halfW / 4 + offsetW, oneThirdH - 175 + offsetH, 175, 175));
 
-    // Create the add(+) button. You can imitate the enter button construction in the Initialize() function.
-    // Suggestion of ImageButton's position setting: x(halfW / 4 + offsetW), y(oneThirdH + 25 + offsetH), w(75), h(50).
-    // Suggestion of Label position settings: x(halfW / 4 + 35 + offsetW), y(oneThirdH + 50 + offsetH). (finish
+    // Create the add(+) button.
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW / 4 + offsetW, oneThirdH + 25 + offsetH, 75, 50);
     btn->SetOnClickCallback(std::bind(&ArmySelectScene::PlayOnClick, this, BUTTON_ADD, id, 1));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("+", "pirulen.ttf", 45, halfW / 4 + 35 + offsetW, oneThirdH + 50 + offsetH, 0, 0, 0, 255, 0.5, 0.5));
 
-    // Create the sub(-) button. You can imitate the enter button construction in the Initialize() function.
-    // Suggestion of ImageButton's position settings: x(halfW / 4 + offsetW + 100), y(oneThirdH + 25 + offsetH), w(75), h(50).
-    // Suggestion of Label position settings: x(halfW / 4 + 135 + offsetW), y(oneThirdH + 50 + offsetH). (finish
+    // Create the sub(-) button.
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW / 4 + offsetW + 100, oneThirdH + 25 + offsetH, 75, 50);
     btn->SetOnClickCallback(std::bind(&ArmySelectScene::PlayOnClick, this, BUTTON_SUB, id, 1));
     AddNewControlObject(btn);
