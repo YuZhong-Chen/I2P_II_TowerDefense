@@ -12,12 +12,13 @@
 #include "Resources.hpp"
 #include "Slider.hpp"
 #include "ArmySelectScene.hpp"
+#include "Setting_Scene.hpp"
 
 void ArmySelectScene::Initialize() {
     // parameter initialization
     // modify the totalArmy amount.
     totalArmy = 3;
-    totalSpell = 1;
+    totalSpell = 2;
     
     // Space status background
     AddNewObject(new Engine::Image("play/sand.png", 1250, 0, 336, 896));
@@ -41,15 +42,13 @@ void ArmySelectScene::Initialize() {
         }
     }
     fromSetting = false;
-    
-    // temp;
-    // armyAmount[0] = 1;
 
     // set ArmyImage
     ArmyImage[0] = "play/warrior.png";
     ArmyImage[1] = "play/bombs.png";
     ArmyImage[2] = "play/Wobbuffet.png";
     ArmyImage[totalArmy + 0] = "play/FrozenSpell.png";
+    ArmyImage[totalArmy + 1] = "play/StrengthenSpell.png";
 
     // Add new enemy
     for (int i=0; i<totalArmy; i++) {
@@ -139,7 +138,9 @@ void ArmySelectScene::PlayOnClick(ButtonType type, int id, int spaceCost) {
         }
     }
     else if (type == BUTTON_SETTING) {
+        SettingScene *scene = dynamic_cast<SettingScene *>(Engine::GameEngine::GetInstance().GetScene("setting"));
         Engine::GameEngine::GetInstance().ChangeScene("setting");
+        scene->isFromStageSelect = false;
         fromSetting = true;
     }
 }

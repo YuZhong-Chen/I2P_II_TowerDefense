@@ -163,6 +163,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StageSelectScene.cpp" />
     <ClCompile Include="Start_Scene.cpp" />
+    <ClCompile Include="StrengthenSpell.cpp" />
     <ClCompile Include="TrapDefense.cpp" />
     <ClCompile Include="WallDefense.cpp" />
     <ClCompile Include="WinScene.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="StageSelectScene.hpp" />
     <ClInclude Include="Start_Scene.hpp" />
+    <ClInclude Include="StrengthenSpell.hpp" />
     <ClInclude Include="TrapDefense.hpp" />
     <ClInclude Include="ViewController.h" />
     <ClInclude Include="WallDefense.hpp" />

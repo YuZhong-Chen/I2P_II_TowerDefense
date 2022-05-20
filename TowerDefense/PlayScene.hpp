@@ -10,6 +10,7 @@
 
 #include "IScene.hpp"
 #include "Point.hpp"
+#include "Label.hpp"
 
 #define MAX_ARMY_AMOUNT 6
 #define WALL_SIZE 4
@@ -56,7 +57,8 @@ public:
     Engine::Point corners[WALL_SIZE];
     std::vector<Engine::Point> brokenWall[WALL_SIZE];
 	float ticks;
-	float deathCountDown;
+	float RemainTime;
+	Engine::Label *RemainTime_Label;
 	// Map tiles.
 	Group* TileMapGroup;
 	Group* GroundEffectGroup;

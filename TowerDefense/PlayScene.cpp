@@ -36,6 +36,7 @@
 //Spell
 #include "FrozenSpell.hpp"
 #include "IceEffect.hpp"
+#include "StrengthenSpell.hpp"
 
 // Defense
 #include "CannonDefense.hpp"
@@ -71,7 +72,7 @@ void PlayScene::Initialize() {
 	mapState.clear();
 	keyStrokes.clear();
 	ticks = 0;
-	deathCountDown = -1;
+	RemainTime = 60.0;
 	SpeedMult = 1;
     for (int i = 0; i < WALL_SIZE; i++) {
         brokenWall[i].clear();
@@ -104,6 +105,9 @@ void PlayScene::Initialize() {
         }
     }
 
+    RemainTime_Label = new Engine::Label(std::to_string(100), "pirulen.ttf", 50, 1500, 36, 255, 255, 0, 255, 1, 0);
+    RemainTime_Label->Draw();
+
 	// Preload Lose Scene
 	deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
 	Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
@@ -120,18 +124,17 @@ void PlayScene::Terminate() {
 	AudioHelper::StopSample(deathBGMInstance);
 	deathBGMInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
 	IScene::Terminate();
+    delete RemainTime_Label;
 }
 void PlayScene::Update(float deltaTime) {
-	if (SpeedMult == 0)
-		deathCountDown = -1;
-	else if (deathCountDown != -1)
-		SpeedMult = 1;
 
 	for (int i = 0; i < SpeedMult; i++) {
 	    IScene::Update(deltaTime);
 		ticks += deltaTime;
+        RemainTime -= deltaTime;
+        RemainTime_Label->Text = std::to_string((int)RemainTime);
 	}
-    
+
     // Win
     bool defenseEmpty = true;
     for (auto &it : DefenseGroup->GetObjects()) {
@@ -155,7 +158,7 @@ void PlayScene::Update(float deltaTime) {
     }
     // Check the amount of army in the scene.
     if (!ArmyGroup->GetObjects().empty()) armyEmpty = false;
-    if (armyEmpty) {
+    if (armyEmpty || RemainTime < 0) {
         Engine::GameEngine::GetInstance().ChangeScene("lose");
     }
     
@@ -167,6 +170,7 @@ void PlayScene::Update(float deltaTime) {
 }
 void PlayScene::Draw() const {
 	IScene::Draw();
+    RemainTime_Label->Draw();
 }
 void PlayScene::OnMouseDown(int button, int mx, int my) {
 	if ((button & 1) && !imgTarget->Visible && preview) {
@@ -221,7 +225,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
             if (preview->id < totalArmy) {
                 ArmyGroup->AddNewObject(preview);
             }
-            else {
+            else if(preview->id == 3) {
                 dynamic_cast<FrozenSpell*>(preview)->isPlace = true;
                 SpellGroup->AddNewObject(preview);
 
@@ -233,6 +237,22 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
                         for (auto &it : DefenseGroup->GetObjects()) {
                             if (it->Position == temp) {
                                 dynamic_cast<Defense*>(it)->SetFrozen();
+                            }
+                        }
+                    }
+                }
+            }
+            else if (preview->id == 4) {
+                dynamic_cast<StrengthenSpell *>(preview)->isPlace = true;
+                SpellGroup->AddNewObject(preview);
+
+                Engine::Point temp;
+                for (int i = 0; i < 9; i++) {
+                    temp = preview->Position + SpellLocation[i];
+                    if (CheckSpelled(temp)) {
+                        for (auto &it : ArmyGroup->GetObjects()) {
+                            if (Engine::Collider::IsCircleOverlap(it->Position, 0, temp, dynamic_cast<StrengthenSpell*>(preview)->GetShootRadius())) {
+                                dynamic_cast<Army *>(it)->Strengthen(2.0);
                             }
                         }
                     }
@@ -254,6 +274,8 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
                     preview = new WobbuffetArmy(0, 0);
                 else if (remainId == 3)
                     preview = new FrozenSpell(0, 0);
+                else
+                    preview = new StrengthenSpell(0, 0);
 
                 preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
                 preview->Tint = al_map_rgba(255, 255, 255, 200);
@@ -319,6 +341,10 @@ void PlayScene::OnKeyDown(int keyCode) {
 		// Hotkey for FrozenSpell
 		UIBtnClicked(3);
 	}
+    else if (keyCode == ALLEGRO_KEY_T && armyAmount[4] > 0) {
+        // Hotkey for StrengthenSpell
+        UIBtnClicked(4);
+    }
     else if (keyCode == ALLEGRO_KEY_M) {
         // mute
         mute = !mute;
@@ -415,11 +441,10 @@ void PlayScene::ConstructUI() {
 	// Background
 	UIGroup->AddNewObject(new Engine::Image("play/sand.png", 0, 64*MapHeight, 1536, 128));
 
-    // Construct the select button for bomb army.
-    ConstructButton(0, ArmyImage[0]);
-    ConstructButton(1, ArmyImage[1]);
-    ConstructButton(2, ArmyImage[2]);
-    ConstructButton(3, ArmyImage[3]);
+    // Construct the select button.
+    for (int i = 0; i < 5; i++) {
+        ConstructButton(i, ArmyImage[i]);
+    }
 }
 void PlayScene::ConstructButton(int id, std::string imageName) {
     ArmyButton* btn;
@@ -453,6 +478,8 @@ void PlayScene::UIBtnClicked(int id) {
         preview = new WobbuffetArmy(0, 0);
     else if (id == 3)
         preview = new FrozenSpell(0, 0);
+    else if (id == 4)
+        preview = new StrengthenSpell(0, 0);
 
 	if (!preview)
 		return;

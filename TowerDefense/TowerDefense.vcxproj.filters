@@ -156,6 +156,9 @@
     <ClCompile Include="TrapDefense.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StrengthenSpell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ViewController.h">
@@ -291,6 +294,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TrapDefense.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StrengthenSpell.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

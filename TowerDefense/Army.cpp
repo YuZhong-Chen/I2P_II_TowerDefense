@@ -56,6 +56,12 @@ void Army::SlowDown(float ratio) {
 		isSlowDown = true;
 	}
 }
+void Army::Strengthen(float ratio) {
+	if (!isStrengthen) {
+		speed *= ratio;
+		isStrengthen = true;
+	}
+}
 void Army::Update(float deltaTime) {
 	// PlayScene
 	PlayScene* scene = getPlayScene();
