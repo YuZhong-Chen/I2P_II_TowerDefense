@@ -50,6 +50,12 @@ void Army::Hit(float damage) {
 		AudioHelper::PlayAudio("explosion.wav");
 	}
 }
+void Army::SlowDown(float ratio) {
+	if (!isSlowDown) {
+		speed *= ratio;
+		isSlowDown = true;
+	}
+}
 void Army::Update(float deltaTime) {
 	// PlayScene
 	PlayScene* scene = getPlayScene();

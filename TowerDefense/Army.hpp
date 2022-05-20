@@ -20,6 +20,7 @@ protected:
     float reload = 0;
     float rotateRadian = 2 * ALLEGRO_PI;
     float shootRadius;
+    bool isSlowDown = false;
     std::list<Army*>::iterator lockedArmyIterator;
 public:
     int id;
@@ -37,6 +38,7 @@ public:
     // Reference: Design Patterns - Factory Method.
     virtual void CreateBullet(Engine::Point pt) = 0;
     void Hit(float damage) override;
+    void SlowDown(float ratio);
     void Update(float deltaTime) override;
     void Draw() const override;
     bool InShootingRange(Engine::Point obj);
