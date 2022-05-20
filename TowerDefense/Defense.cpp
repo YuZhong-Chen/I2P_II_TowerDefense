@@ -88,10 +88,15 @@ void Defense::Update(float deltaTime) {
     }
 }
 void Defense::Draw() const {
-    Sprite::Draw();
+    if (Visible) {
+        Sprite::Draw();
+    }
     if (PlayScene::DebugMode) {
         // Draw target radius.
-        al_draw_circle(Position.x, Position.y, shootRadius, al_map_rgb(0, 0, 255), 2);
+        if (id == 3) 
+            al_draw_circle(Position.x, Position.y, shootRadius, al_map_rgb(0, 255, 0), 2);
+        else 
+            al_draw_circle(Position.x, Position.y, shootRadius, al_map_rgb(0, 0, 255), 2);
     }
 }
 

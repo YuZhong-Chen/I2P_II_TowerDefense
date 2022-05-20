@@ -45,8 +45,13 @@ void SettingScene::Terminate() {
 	IScene::Terminate();
 }
 void SettingScene::PlayOnClick(int stage) {
+    if (isFromStageSelect) {
+        Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+        isFromStageSelect = false;
+    }
+    else {
         Engine::GameEngine::GetInstance().ChangeScene("army-select");
-
+    }
 }
 void SettingScene::BGMSlideOnValueChanged(float value) {
     AudioHelper::ChangeSampleVolume(bgmInstance, value);

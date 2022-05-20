@@ -55,6 +55,7 @@ void BombArmy::Update(float deltaTime) {
         }
         else {
             for (auto& it : scene->DefenseGroup->GetObjects()) {
+                if (dynamic_cast<Defense*>(it)->id == 3) continue;
                 int dis = ManHattanDistance(it->Position);
                 if (dis < maxDis) {
                     maxDis = dis;

@@ -41,6 +41,7 @@
 #include "CannonDefense.hpp"
 #include "SphealDefense.hpp"
 #include "WallDefense.hpp"
+#include "TrapDefense.hpp"
 
 #define LEFT 0
 #define RIGHT 1
@@ -59,7 +60,7 @@ const float PlayScene::DangerTime = 7.61;
 
 // Set the code sequence.
 const std::vector<int> PlayScene::code = { ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_LEFT, ALLEGRO_KEY_RIGHT, ALLEGRO_KEY_ENTER };
-
+// Set the Spell Effect range.
 const Engine::Point PlayScene::SpellLocation[9] = { Engine::Point(-PlayScene::BlockSize, -PlayScene::BlockSize), Engine::Point(-PlayScene::BlockSize, 0), Engine::Point(-PlayScene::BlockSize, PlayScene::BlockSize), Engine::Point(0, -PlayScene::BlockSize), Engine::Point(0, 0), Engine::Point(0, PlayScene::BlockSize), Engine::Point(PlayScene::BlockSize, -PlayScene::BlockSize), Engine::Point(PlayScene::BlockSize, 0), Engine::Point(PlayScene::BlockSize, PlayScene::BlockSize)};
 
 Engine::Point PlayScene::GetClientSize() {
@@ -72,7 +73,6 @@ void PlayScene::Initialize() {
 	ticks = 0;
 	deathCountDown = -1;
 	SpeedMult = 1;
-    MapId = 1;
     for (int i = 0; i < WALL_SIZE; i++) {
         brokenWall[i].clear();
     }
@@ -96,6 +96,13 @@ void PlayScene::Initialize() {
 	imgTarget->Visible = false;
 	preview = nullptr;
 	UIGroup->AddNewObject(imgTarget);
+
+    DebugMode = false;
+    for (auto &it : DefenseGroup->GetObjects()) {
+        if (dynamic_cast<Defense *>(it)->id == 3) {
+            it->Visible = DebugMode;
+        }
+    }
 
 	// Preload Lose Scene
 	deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
@@ -126,7 +133,14 @@ void PlayScene::Update(float deltaTime) {
 	}
     
     // Win
-    if (DefenseGroup->GetObjects().empty()) {
+    bool defenseEmpty = true;
+    for (auto &it : DefenseGroup->GetObjects()) {
+        if (dynamic_cast<Defense *>(it)->id != 3) {
+            defenseEmpty = false;
+            break;
+        }
+    }
+    if (defenseEmpty) {
         Engine::GameEngine::GetInstance().ChangeScene("win");
     }
     
@@ -263,6 +277,11 @@ void PlayScene::OnKeyDown(int keyCode) {
 	if (keyCode == ALLEGRO_KEY_TAB) {
         // Set Tab as a code to active / de-active the debug mode.
         DebugMode = !DebugMode;
+        for (auto &it : DefenseGroup->GetObjects()) {
+            if (dynamic_cast<Defense *>(it)->id == 3) {
+                it->Visible = DebugMode;
+            }
+        }
 	}
 	else {
 		keyStrokes.push_back(keyCode);
@@ -329,11 +348,13 @@ void PlayScene::ReadMap() {
         // 1: wall
         // 2: canon
         // 3: spheal
+        // 4: trap
 		switch (c) {
 		case '0': mapData.push_back(TILE_FLOOR);  break;
 		case '1': mapData.push_back(TILE_WALL);   break;
         case '2': mapData.push_back(TILE_CANNON); break;
         case '3': mapData.push_back(TILE_SPHEAL); break;
+        case '4': mapData.push_back(TILE_TRAP);   break;
 		case '\n':
 		case '\r':
 			if (static_cast<int>(mapData.size()) / MapWidth != 0)
@@ -367,6 +388,9 @@ void PlayScene::ReadMap() {
                     break;
                 case TILE_SPHEAL:
                     DefenseGroup->AddNewObject(new SphealDefense(j * BlockSize + BlockSize / 2, i * BlockSize + BlockSize / 2));
+                    break;
+                case TILE_TRAP:
+                    DefenseGroup->AddNewObject(new TrapDefense(j * BlockSize + BlockSize / 2, i * BlockSize + BlockSize / 2));
                     break;
                 case TILE_FLOOR:
                     if (j <= MapWidth-2 && j >= 2) {
@@ -417,6 +441,10 @@ void PlayScene::UIBtnClicked(int id) {
         preview = nullptr;
     }
     
+    if (armyAmount[id] <= 0) {
+        return;
+    }
+
     if (id == 0)
         preview = new ArcherArmy(0, 0);
     else if (id == 1)

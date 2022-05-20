@@ -13,7 +13,7 @@ class PlayScene;
 class Defense: public Role {
 protected:
     float timeTicks = 0.0;
-    float timeSpan = 2.0;
+    float timeSpan = -1;
     float shootRadius;
     float coolDown;
     float reload = 0;

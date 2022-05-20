@@ -12,6 +12,8 @@
 #include "Resources.hpp"
 #include "Slider.hpp"
 #include "StageSelectScene.hpp"
+#include "Setting_Scene.hpp"
+#include "ArmySelectScene.hpp"
 
 void StageSelectScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -43,14 +45,17 @@ void StageSelectScene::Terminate() {
 }
 void StageSelectScene::PlayOnClick(int stage) {
     if(stage==-1){
+        SettingScene *scene = dynamic_cast<SettingScene *>(Engine::GameEngine::GetInstance().GetScene("setting"));
+        scene->isFromStageSelect = true;
         Engine::GameEngine::GetInstance().ChangeScene("setting");
     }
     else{
-        PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
-        scene->MapId = stage;
-        Engine::GameEngine::GetInstance().ChangeScene("play");
+        PlayScene *playscene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
+        playscene->MapId = stage;
+        ArmySelectScene *armyselectscene = dynamic_cast<ArmySelectScene *>(Engine::GameEngine::GetInstance().GetScene("army-select"));
+        armyselectscene->totalSpace = 10 * stage;
+        Engine::GameEngine::GetInstance().ChangeScene("army-select");
     }
-
 }
 void StageSelectScene::BGMSlideOnValueChanged(float value) {
     AudioHelper::ChangeSampleVolume(bgmInstance, value);

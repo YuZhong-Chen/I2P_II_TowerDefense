@@ -26,7 +26,7 @@ void ArmySelectScene::Initialize() {
     if (!fromSetting) {
         usedSpace = 0;
     }
-    totalSpace = 10;
+    // totalSpace = 10;
 
     // Add the usedSpace and totalSpace to the label.
     AddNewObject(UISpaceUsage = new Engine::Label("Space: " + std::to_string(usedSpace) + "/" + std::to_string(totalSpace), "pirulen.ttf", 30, 1395, 150, 0, 0, 0, 255, 0.5, 0.5));
@@ -37,13 +37,13 @@ void ArmySelectScene::Initialize() {
             armyAmount[i] = 0;
         }
         for (int i = totalArmy; i < totalArmy + totalSpell; i++) {
-            armyAmount[i] = 10;
+            armyAmount[i] = 2;
         }
     }
     fromSetting = false;
     
     // temp;
-    armyAmount[0] = 1;
+    // armyAmount[0] = 1;
 
     // set ArmyImage
     ArmyImage[0] = "play/warrior.png";
