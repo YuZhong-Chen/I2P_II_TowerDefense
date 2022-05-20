@@ -23,6 +23,7 @@
 #include "Resources.hpp"
 #include "Sprite.hpp"
 #include "LOG.hpp"
+#include "Collider.hpp"
 
 // Button
 #include "ArmyButton.hpp"
@@ -31,6 +32,10 @@
 #include "BombArmy.hpp"
 #include "ArcherArmy.hpp"
 #include "WobbuffetArmy.hpp"
+
+//Spell
+#include "FrozenSpell.hpp"
+#include "IceEffect.hpp"
 
 // Defense
 #include "CannonDefense.hpp"
@@ -55,6 +60,8 @@ const float PlayScene::DangerTime = 7.61;
 // Set the code sequence.
 const std::vector<int> PlayScene::code = { ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_LEFT, ALLEGRO_KEY_RIGHT, ALLEGRO_KEY_ENTER };
 
+const Engine::Point PlayScene::SpellLocation[9] = { Engine::Point(-PlayScene::BlockSize, -PlayScene::BlockSize), Engine::Point(-PlayScene::BlockSize, 0), Engine::Point(-PlayScene::BlockSize, PlayScene::BlockSize), Engine::Point(0, -PlayScene::BlockSize), Engine::Point(0, 0), Engine::Point(0, PlayScene::BlockSize), Engine::Point(PlayScene::BlockSize, -PlayScene::BlockSize), Engine::Point(PlayScene::BlockSize, 0), Engine::Point(PlayScene::BlockSize, PlayScene::BlockSize)};
+
 Engine::Point PlayScene::GetClientSize() {
 	return Engine::Point(MapWidth * BlockSize, MapHeight * BlockSize);
 }
@@ -72,13 +79,14 @@ void PlayScene::Initialize() {
 
 	// Add groups from bottom to top.
 	AddNewObject(TileMapGroup = new Group());
-    AddNewObject(ArmyGroup = new Group());
     AddNewObject(WallGroup = new Group());
     AddNewObject(DefenseGroup = new Group());
+    AddNewObject(ArmyGroup = new Group());
 	AddNewObject(DebugIndicatorGroup = new Group());
-	AddNewObject(BulletGroup = new Group());
     AddNewObject(GroundEffectGroup = new Group());
 	AddNewObject(EffectGroup = new Group());
+    AddNewObject(SpellGroup = new Group());
+    AddNewObject(BulletGroup = new Group());
     
 	// Should support buttons.
 	AddNewControlObject(UIGroup = new Group());
@@ -178,7 +186,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 	if(x < 0 || x >= MapWidth || y < 0 || y >= MapHeight)
 	    return;
 	if (button & 1) {
-		if (!CheckOccupied(x, y)) {
+		if ((preview && preview->id >= totalArmy) || !CheckOccupied(x, y)) {
 			if (!preview)
 				return;
 
@@ -195,7 +203,28 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
             preview->isPreview = false;
 			preview->Tint = al_map_rgba(255, 255, 255, 255);
             preview->CalcRegion(x, y);
-			ArmyGroup->AddNewObject(preview);
+
+            if (preview->id < totalArmy) {
+                ArmyGroup->AddNewObject(preview);
+            }
+            else {
+                dynamic_cast<FrozenSpell*>(preview)->isPlace = true;
+                SpellGroup->AddNewObject(preview);
+
+                Engine::Point temp;
+                for (int i = 0; i < 9; i++) {
+                    temp = preview->Position + SpellLocation[i];
+                    if (CheckSpelled(temp)) {
+                        EffectGroup->AddNewObject(new IceEffect(temp));
+                        for (auto &it : DefenseGroup->GetObjects()) {
+                            if (it->Position == temp) {
+                                dynamic_cast<Defense*>(it)->SetFrozen();
+                            }
+                        }
+                    }
+                }
+            }
+               
 			// To keep responding when paused.
 			preview->Update(0);
 			// Remove Preview.
@@ -209,6 +238,8 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
                     preview = new BombArmy(0, 0);
                 else if (remainId == 2)
                     preview = new WobbuffetArmy(0, 0);
+                else if (remainId == 3)
+                    preview = new FrozenSpell(0, 0);
 
                 preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
                 preview->Tint = al_map_rgba(255, 255, 255, 200);
@@ -266,7 +297,7 @@ void PlayScene::OnKeyDown(int keyCode) {
 		UIBtnClicked(2);
 	}
 	else if (keyCode == ALLEGRO_KEY_R && armyAmount[3] > 0) {
-		// Hotkey for ...
+		// Hotkey for FrozenSpell
 		UIBtnClicked(3);
 	}
     else if (keyCode == ALLEGRO_KEY_M) {
@@ -364,6 +395,7 @@ void PlayScene::ConstructUI() {
     ConstructButton(0, ArmyImage[0]);
     ConstructButton(1, ArmyImage[1]);
     ConstructButton(2, ArmyImage[2]);
+    ConstructButton(3, ArmyImage[3]);
 }
 void PlayScene::ConstructButton(int id, std::string imageName) {
     ArmyButton* btn;
@@ -391,6 +423,8 @@ void PlayScene::UIBtnClicked(int id) {
         preview = new BombArmy(0, 0);
     else if (id == 2)
         preview = new WobbuffetArmy(0, 0);
+    else if (id == 3)
+        preview = new FrozenSpell(0, 0);
 
 	if (!preview)
 		return;
@@ -404,7 +438,6 @@ void PlayScene::UIBtnClicked(int id) {
 	OnMouseMove(Engine::GameEngine::GetInstance().GetMousePosition().x, Engine::GameEngine::GetInstance().GetMousePosition().y);
 }
 
-
 bool PlayScene::CheckOccupied(int x, int y) {
     if (x < 0 || x >= MapWidth  || y < 0 || y >= MapHeight)
         return true;
@@ -417,6 +450,13 @@ bool PlayScene::CheckOccupied(int x, int y) {
         ) return true;
     
     return false;
+}
+
+bool PlayScene::CheckSpelled(Engine::Point pt) {
+    if (pt.x < 0 || pt.x / BlockSize >= MapWidth || pt.y < 0 || pt.y / BlockSize >= MapHeight)
+        return false;
+
+    return true;
 }
 
 int PlayScene::GetArmyAmount(int id) {

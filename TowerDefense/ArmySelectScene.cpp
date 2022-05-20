@@ -17,6 +17,7 @@ void ArmySelectScene::Initialize() {
     // parameter initialization
     // modify the totalArmy amount.
     totalArmy = 3;
+    totalSpell = 1;
     
     // Space status background
     AddNewObject(new Engine::Image("play/sand.png", 1250, 0, 336, 896));
@@ -35,16 +36,20 @@ void ArmySelectScene::Initialize() {
         for (int i=0; i<totalArmy; i++) {
             armyAmount[i] = 0;
         }
+        for (int i = totalArmy; i < totalArmy + totalSpell; i++) {
+            armyAmount[i] = 10;
+        }
     }
     fromSetting = false;
-    // armyAmount[0] = 0;
-    // armyAmount[1] = 0;
-    // armyAmount[2] = 0;
+    
+    // temp;
+    armyAmount[0] = 1;
 
     // set ArmyImage
     ArmyImage[0] = "play/warrior.png";
     ArmyImage[1] = "play/bombs.png";
     ArmyImage[2] = "play/Wobbuffet.png";
+    ArmyImage[totalArmy + 0] = "play/FrozenSpell.png";
 
     // Add new enemy
     for (int i=0; i<totalArmy; i++) {
@@ -91,7 +96,10 @@ void ArmySelectScene::PlayOnClick(ButtonType type, int id, int spaceCost) {
             scene->SetArmyAmount(i, armyAmount[i]);
             scene->ArmyImage[i] = ArmyImage[i];
         }
-
+        for (int i = totalArmy; i < totalArmy + totalSpell; i++) {
+            scene->SetArmyAmount(i, armyAmount[i]);
+            scene->ArmyImage[i] = ArmyImage[i];
+        }
         Engine::GameEngine::GetInstance().ChangeScene("play");
         scene->mute = mute;
     }

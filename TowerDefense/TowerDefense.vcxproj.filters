@@ -144,6 +144,15 @@
     <ClCompile Include="SphealBullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IceEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrozenSpell.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrozenSpell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ViewController.h">
@@ -273,6 +282,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SphealBullet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IceEffect.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

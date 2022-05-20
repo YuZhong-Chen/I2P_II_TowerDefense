@@ -12,6 +12,8 @@ class PlayScene;
 
 class Defense: public Role {
 protected:
+    float timeTicks = 0.0;
+    float timeSpan = 2.0;
     float shootRadius;
     float coolDown;
     float reload = 0;
@@ -30,6 +32,7 @@ public:
     void Update(float deltaTime) override;
     void Draw() const override;
     bool InShootingRange(Engine::Point obj);
+    void SetFrozen();
 };
 
 #endif /* Defense_hpp */

@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 #include <tuple>
+#include <utility>
 
 #include "IScene.hpp"
 #include "Point.hpp"
@@ -40,7 +41,7 @@ protected:
     // Enemy Amounts
     int armyAmount[MAX_ARMY_AMOUNT];
     // Total enemies;
-    int totalArmy;
+    int totalArmy; 
 public:
     bool mute;
 	static bool DebugMode;
@@ -49,6 +50,7 @@ public:
 	static const int BlockSize;
 	static const float DangerTime;
 	static const std::vector<int> code;
+	static const Engine::Point SpellLocation[9];
 	int MapId;
     Engine::Point corners[WALL_SIZE];
     std::vector<Engine::Point> brokenWall[WALL_SIZE];
@@ -62,6 +64,7 @@ public:
     Group* DefenseGroup;
     Group* WallGroup;
     Group* ArmyGroup;
+	Group *SpellGroup;
 	Group* EffectGroup;
 	Group* UIGroup;
     std::string ArmyImage[MAX_ARMY_AMOUNT];
@@ -93,6 +96,8 @@ public:
     void ConstructButton(int id, std::string imageName);
 	void UIBtnClicked(int id);
     bool CheckOccupied(int x, int y);
+	// Check if the point can be spelled.
+	bool CheckSpelled(Engine::Point pt);
     void ClearMapState(int x, int y);
 };
 #endif // PLAYSCENE_HPP

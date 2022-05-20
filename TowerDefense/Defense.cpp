@@ -33,6 +33,11 @@ void Defense::Hit(float damage) {
     }
 }
 void Defense::Update(float deltaTime) {
+    if (timeTicks <= timeSpan) {
+        timeTicks += deltaTime;
+        return;
+    }
+
     Sprite::Update(deltaTime);
     PlayScene* scene = getPlayScene();
     if (!Enabled)
@@ -97,3 +102,7 @@ bool Defense::InShootingRange(Engine::Point obj) {
     return (pow(abs(x - obj.x), 2) + pow(abs(y - obj.y), 2) <= pow(shootRadius, 2));
 }
 
+void Defense::SetFrozen() {
+    timeTicks = 0.0;
+    timeSpan = 2.0;
+}

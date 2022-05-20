@@ -29,6 +29,7 @@ public:
     int armyAmount[6];
     int usedSpace, totalSpace;
     int totalArmy;
+    int totalSpell;
     bool mute = false;
     bool fromSetting = false;
 };
